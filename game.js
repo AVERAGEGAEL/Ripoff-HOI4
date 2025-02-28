@@ -90,4 +90,3 @@ map.onload = () => {
     aiBehavior();
     updateGame();
 };
-

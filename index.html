@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOI4 Realtime Game</title>
+    <title>HOI4 Real-Time Game</title>
     <style>
-        body { margin: 0; background-color: #222; color: white; text-align: center; }
-        canvas { display: block; margin: auto; background-color: #555; }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 <body>
-    <h1>HOI4-Inspired Real-Time Strategy Game</h1>
-    <script src="game.js"></script> <!-- Links to your JavaScript file -->
+    <script src="game.js"></script>
 </body>
 </html>

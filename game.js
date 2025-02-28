@@ -1,64 +1,29 @@
-// Get the canvas element and its context for drawing
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Set the canvas size to the full screen
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Define some clickable regions (example coordinates for countries)
-const regions = [
-    { name: "Country A", x: 100, y: 200, width: 150, height: 100, color: "#FF0000" }, // Red
-    { name: "Country B", x: 300, y: 400, width: 200, height: 150, color: "#00FF00" }  // Green
-];
+let playerCountry = ""; // Stores selected country
 
-// Load the map image
-const mapImage = new Image();
-mapImage.src = "map.png";  // Ensure the image path is correct
+function startGame(country) {
+    playerCountry = country;
+    document.getElementById("menu").style.display = "none"; // Hide menu
+    canvas.style.display = "block"; // Show game
 
-// Once the image has loaded, draw it on the canvas
-mapImage.onload = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(mapImage, 0, 0, canvas.width, canvas.height);
+    loadGame();
+}
 
-    // Draw the regions (over the map)
-    regions.forEach(region => {
-        ctx.fillStyle = region.color;
-        ctx.fillRect(region.x, region.y, region.width, region.height);
-    });
-};
+function loadGame() {
+    const mapImage = new Image();
+    mapImage.src = "map.png";
 
-// Handle clicks on the canvas
-canvas.addEventListener("click", (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
-    
-    // Check if the click is inside any region
-    regions.forEach(region => {
-        if (
-            x >= region.x && x <= region.x + region.width &&
-            y >= region.y && y <= region.y + region.height
-        ) {
-            alert(`You clicked on ${region.name}!`);
-            
-            // Change the color to indicate selection (blue when selected)
-            region.color = "#0000FF"; // Change to blue when selected
-            redrawMap(); // Redraw the map with updated region colors
-        }
-    });
-});
+    mapImage.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(mapImage, 0, 0, canvas.width, canvas.height);
 
-// Function to redraw the map with updated region colors
-function redrawMap() {
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Redraw the map image
-    ctx.drawImage(mapImage, 0, 0, canvas.width, canvas.height);
-    
-    // Redraw the regions with their updated colors
-    regions.forEach(region => {
-        ctx.fillStyle = region.color;
-        ctx.fillRect(region.x, region.y, region.width, region.height);
-    });
+        ctx.fillStyle = "white";
+        ctx.font = "30px Arial";
+        ctx.fillText(`You are playing as ${playerCountry}`, 50, 50);
+    };
 }

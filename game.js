@@ -6,9 +6,13 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Add a fallback background color
+ctx.fillStyle = "#cccccc";  // Light gray background
+ctx.fillRect(0, 0, canvas.width, canvas.height);  // Fill the canvas with the background color
+
 // Load the map image
 const mapImage = new Image();
-mapImage.src = "map.png";  // Make sure map.png is in the same folder as the HTML and game.js
+mapImage.src = "map.png";  // Ensure the image path is correct
 
 // Once the image has loaded, draw it on the canvas
 mapImage.onload = () => {
@@ -20,14 +24,6 @@ mapImage.onload = () => {
 };
 
 // Handle any image loading errors
-mapImage.onerror = (err) => {
-    console.error("Image failed to load:", err);
+mapImage.onerror = () => {
+    alert("Image failed to load! Check your file path.");
 };
-
-// Example of handling clicks on the canvas
-canvas.addEventListener("click", (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
-    console.log(`Clicked at coordinates: ${x}, ${y}`);
-    // You can add more logic here to interact with specific areas of the map
-});

@@ -7,9 +7,9 @@ canvas.height = window.innerHeight;
 
 let geoData = null; // Store geoJSON data
 
-// Function to load geoJSON map
+// Function to load geoJSON map (from file)
 function loadMap() {
-    fetch('europe.geojson')  // Ensure this path matches where the file is located
+    fetch('europe.geojson')  // Make sure this path matches where your geoJSON file is located
         .then(response => response.json())
         .then(data => {
             geoData = data; // Store geoJSON data globally

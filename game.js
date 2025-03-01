@@ -1,28 +1,21 @@
-// Get the canvas element and its context
+// Game Initialization
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let playerCountry = ""; // Stores selected country
+let geoData = null; // Store geoJSON data
 
-// Function to start the game after country selection
-function startGame(country) {
-    playerCountry = country;
-    document.getElementById("menu").style.display = "none"; // Hide menu
-    canvas.style.display = "block"; // Show canvas
-
-    loadMap();
-}
-
-// Function to load the map and render the countries
+// Function to load geoJSON map
 function loadMap() {
-    fetch('europe.geojson')  // Assuming your file is named 'europe.geojson'
+    fetch('europe.geojson')  // Ensure this path matches where the file is located
         .then(response => response.json())
         .then(data => {
-            drawMap(data); // Pass the geoJSON data to the drawing function
-        });
+            geoData = data; // Store geoJSON data globally
+            drawMap(geoData); // Start drawing map after loading
+        })
+        .catch(error => console.error("Error loading geoJSON:", error));
 }
 
 // Function to draw the geoJSON map
@@ -30,11 +23,10 @@ function drawMap(geoData) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     geoData.features.forEach((feature) => {
-        // Each feature represents a country in geoJSON
-        const coordinates = feature.geometry.coordinates[0];  // Assume it's a simple polygon
+        const coordinates = feature.geometry.coordinates[0];  // Assuming it's a simple polygon
 
-        // Set country color (can change based on selection)
-        ctx.fillStyle = "#FF5733"; // Change color dynamically later for selection
+        // Set country color (initially gray)
+        ctx.fillStyle = "#999999";
 
         // Draw country borders
         ctx.beginPath();
@@ -62,8 +54,6 @@ canvas.addEventListener("click", (e) => {
 
 // Function to check if a country was clicked (based on coordinates)
 function checkCountryClick(x, y) {
-    // Loop through countries and check if the click is inside a country polygon
-    // This is a basic check, but ideally, we need a more sophisticated method (e.g., using point-in-polygon logic)
     geoData.features.forEach((feature) => {
         const coordinates = feature.geometry.coordinates[0];
         if (isPointInPolygon(x, y, coordinates)) {
@@ -104,4 +94,13 @@ function highlightCountry(countryFeature) {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+}
+
+// Start the game (set up country selection or trigger on page load)
+function startGame(country) {
+    playerCountry = country;
+    document.getElementById("menu").style.display = "none"; // Hide menu
+    canvas.style.display = "block"; // Show canvas
+
+    loadMap();  // Load the map (geoJSON)
 }
